@@ -1,9 +1,10 @@
-const discord = require('discord.js');
-const fs = require('fs');
-const Enmap = require('enmap');
-require('dotenv').config();
+import { Client } from 'discord.js';
+import fs from 'fs';
+import Enmap from 'enmap';
+import dotenv from 'dotenv';
 
-const client = new discord.Client();
+dotenv.config();
+const client = new Client();
 
 client.db = require('./database');
 
