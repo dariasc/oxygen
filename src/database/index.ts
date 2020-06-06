@@ -1,8 +1,14 @@
 import Enmap from 'enmap';
 
-class Settings extends Enmap {
+class Settings extends Enmap<string, Config> {
 
-  defaults: Object = {};
+  defaults: Config = {
+    prefix: ';',
+    authToken: '',
+    playerToken: '',
+    ip: '',
+    port: 0,
+  };
 
   init() {
     this.defer.then(() => {
@@ -16,19 +22,19 @@ class Settings extends Enmap {
 
 }
 
+interface Config {
+  prefix: string,
+  authToken: string,
+  playerToken: string,
+  ip: string,
+  port: number,
+}
+
 const settings = new Settings({
   name: 'settings',
   fetchAll: false,
   autoFetch: true,
   cloneLevel: 'deep',
 });
-
-settings.defaults = {
-  prefix: ';',
-  authToken: '',
-  playerToken: '',
-  ip: '',
-  port: '',
-};
 
 export default settings;

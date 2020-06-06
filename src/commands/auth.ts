@@ -61,7 +61,7 @@ export default class Auth implements Command {
       return;
     }
 
-    const config = settings.get(guild);
+    const config = settings.ensure(guild);
     config.authToken = token;
     settings.set(guild, config);
 

@@ -11,10 +11,10 @@ export default class Status implements Command {
   async run(client: Client, msg: Message) {
     if (!msg.guild) return;
 
-    const config = settings.get(msg.guild.id);
+    const config = settings.ensure(msg.guild.id);
 
-    const authToken = !config.authToken ? negative : positive;
-    const playerToken = !config.playerToken ? negative : positive;
+    const authToken = config.authToken ? negative : positive;
+    const playerToken = config.playerToken ? negative : positive;
 
     const embed = new MessageEmbed()
       .setTitle('Status')
