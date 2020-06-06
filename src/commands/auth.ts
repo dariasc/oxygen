@@ -61,13 +61,8 @@ export default class Auth implements Command {
     const steam = new URL(
       'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/',
     );
-    const params = {
-      key: process.env.STEAM_KEY,
-      steamids: steamid,
-    };
-    Object.keys(params).forEach((key) =>
-      steam.searchParams.append(key, params[key]),
-    );
+    steam.searchParams.append('key', process.env.STEAM_KEY);
+    steam.searchParams.append('steamids', steamid);
 
     const steamAccount = await fetch(steam, {})
       .then((res) => res.json())
