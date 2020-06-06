@@ -16,7 +16,7 @@ const defaultSettings = {
 };
 
 settings.defer.then(() => {
-  console.log(`Enmap [settings] loaded: ${settings.count} keys`);
+  console.log(`[settings] enmap loaded: ${settings.count} keys`);
 });
 
 module.exports = {
