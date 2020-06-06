@@ -6,10 +6,10 @@ import fetch from 'node-fetch';
 import { createServer } from 'http';
 
 let discordClient;
+let executing = new Enmap<string, string>();
 
 export default class Auth implements Command {
   name = 'auth';
-  executing = new Enmap();
 
   constructor() {
     createServer((req, res) => {
@@ -34,9 +34,7 @@ export default class Auth implements Command {
       msg.reply('Insufficient permissions :/');
     }
 
-    this.executing.set(msg.guild.id, {
-      channel: msg.channel.id,
-    });
+    executing.set(msg.guild.id, msg.channel.id);
 
     const embed = new MessageEmbed()
       .setTitle('Authentication')
@@ -75,8 +73,7 @@ export default class Auth implements Command {
       .then((res) => res.json())
       .then((res) => res.response.players[0]);
 
-    const channelId = this.executing.get(guild).channel;
-    const channel = discordClient.channels.cache.get(channelId);
+    const channel = discordClient.channels.cache.get(executing.get(guild));
 
     const steamData = new MessageEmbed()
       .setTitle(steamAccount.personaname)

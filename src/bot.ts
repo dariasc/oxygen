@@ -1,5 +1,6 @@
-import { Client, Collection } from 'discord.js';
+import { Client } from 'discord.js';
 import Command from './struct/command';
+import Enmap from 'enmap';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
@@ -8,7 +9,7 @@ const client = new Client();
 
 client.db = require('./database');
 
-let commands = new Collection<string, Command>();
+let commands = new Enmap<string, Command>();
 
 fs.readdir('./src/commands/', (err, files) => {
   if (err) return console.error(err);
