@@ -9,6 +9,7 @@
   "author": "Diego Arias",
   "license": "MIT",
   "dependencies": {
+    "@types/node-fetch": "^2.5.7",
     "better-sqlite3": "^7.0.1",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",

@@ -1,11 +1,11 @@
 import Command from '../struct/command';
-
-import { MessageEmbed } from 'discord.js';
+import settings from '../database';
+import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
 import Enmap from 'enmap';
 import fetch from 'node-fetch';
 import { createServer } from 'http';
 
-let discordClient;
+let discord: Client;
 let executing = new Enmap<string, string>();
 
 export default class Auth implements Command {
@@ -13,7 +13,7 @@ export default class Auth implements Command {
 
   constructor() {
     createServer((req, res) => {
-      const requestUrl = new URL(req.url, `http://${req.headers.host}`);
+      const requestUrl = new URL(req.url!, `http://${req.headers.host}`);
       this.handleToken(requestUrl.searchParams, requestUrl.pathname);
   
       res.writeHead(302, {
@@ -25,11 +25,13 @@ export default class Auth implements Command {
     console.log('[webserver] auth service started on port 3000');
   }
 
-  async run(client, msg) {
+  async run(client: Client, msg: Message) {
     // TODO: Change this up
-    if (!discordClient) {
-      discordClient = client;
+    if (!discord) {
+      discord = client;
     }
+    if (!msg.guild || !msg.member) return;
+
     if (!msg.member.hasPermission('MANAGE_GUILD')) {
       msg.reply('Insufficient permissions :/');
     }
@@ -49,26 +51,38 @@ export default class Auth implements Command {
     msg.channel.send(embed);
   }
 
-  async handleToken(searchParams, pathName) {
+  async handleToken(searchParams: URLSearchParams, pathName: string) {
     const token = searchParams.get('token');
     const steamid = searchParams.get('steamId');
     const guild = pathName.replace(/\//g, '');
 
-    const settings = discordClient.db.settings.get(guild);
-    settings.authToken = token;
-    discordClient.db.settings.set(guild, settings);
+    if (!token || !steamid) {
+      console.log('[handleToken] inavlid steamid or token');
+      return;
+    }
+
+    const config = settings.get(guild);
+    config.authToken = token;
+    settings.set(guild, config);
 
     const steam = new URL(
       'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/',
     );
-    steam.searchParams.append('key', process.env.STEAM_KEY);
+    
+    steam.searchParams.append('key', process.env.STEAM_KEY!);
     steam.searchParams.append('steamids', steamid);
 
     const steamAccount = await fetch(steam, {})
       .then((res) => res.json())
       .then((res) => res.response.players[0]);
 
-    const channel = discordClient.channels.cache.get(executing.get(guild));
+    const channelId = executing.get(guild)
+    if (!channelId) {
+      console.log('[handleToken] invalid channelId found');
+      return;
+    }
+    const channel = discord.channels.cache.get(channelId) as TextChannel;
+    if (!channel) return;
 
     const steamData = new MessageEmbed()
       .setTitle(steamAccount.personaname)

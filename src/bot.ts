@@ -3,11 +3,12 @@ import Command from './struct/command';
 import Enmap from 'enmap';
 import fs from 'fs';
 import dotenv from 'dotenv';
+import settings from './database'
 
 dotenv.config();
 const client = new Client();
 
-client.db = require('./database');
+settings.init();
 
 let commands = new Enmap<string, Command>();
 
@@ -26,25 +27,26 @@ fs.readdir('./src/commands/', (err, files) => {
 });
 
 client.on('ready', () => {
+  if (!client.user) return;
+
   console.log(`[login] as ${client.user.tag}!`);
 });
 
 client.on('guildDelete', (guild) => {
-  client.db.settings.delete(guild.id);
+  settings.delete(guild.id);
 });
 
 client.on('message', (msg) => {
   if (msg.author.bot) return;
+  if (!msg.guild) return;
 
-  const conf = client.db.settings.ensure(
-    msg.guild.id,
-    client.db.defaultSettings,
-  );
+  const conf = settings.ensure(msg.guild.id,);
 
   if (!msg.content.startsWith(conf.prefix)) return;
 
   const args = msg.content.slice(conf.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
+
+  const command = args.shift()!.toLowerCase();
 
   const cmd = commands.get(command);
 

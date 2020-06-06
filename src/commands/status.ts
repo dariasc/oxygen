@@ -1,5 +1,6 @@
-import Discord from 'discord.js';
+import { Client, Message, MessageEmbed} from 'discord.js';
 import Command from '../struct/command';
+import settings from '../database';
 
 const positive = ':white_check_mark:';
 const negative = ':no_entry_sign:';
@@ -7,13 +8,15 @@ const negative = ':no_entry_sign:';
 export default class Status implements Command {
   name = 'status';
 
-  async run(client, msg) {
-    const settings = client.db.settings.get(msg.guild.id);
+  async run(client: Client, msg: Message) {
+    if (!msg.guild) return;
 
-    const authToken = !settings.authToken ? negative : positive;
-    const playerToken = !settings.playerToken ? negative : positive;
+    const config = settings.get(msg.guild.id);
 
-    const embed = new Discord.MessageEmbed()
+    const authToken = !config.authToken ? negative : positive;
+    const playerToken = !config.playerToken ? negative : positive;
+
+    const embed = new MessageEmbed()
       .setTitle('Status')
       .addField('Authentication Token', authToken)
       .addField('Player Token', playerToken);
