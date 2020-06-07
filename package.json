@@ -9,16 +9,19 @@
   "author": "Diego Arias",
   "license": "MIT",
   "dependencies": {
-    "@types/node-fetch": "^2.5.7",
     "better-sqlite3": "^7.0.1",
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0",
     "enmap": "^5.2.9",
     "node-fetch": "^2.6.0",
     "protobufjs": "^6.9.0",
+    "push-receiver": "^2.1.0",
+    "uuid": "^8.1.0",
     "websocket": "^1.0.31"
   },
   "devDependencies": {
+    "@types/uuid": "^8.0.0",
+    "@types/node-fetch": "^2.5.7",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.11.0",
