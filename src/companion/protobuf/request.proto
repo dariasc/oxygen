@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 message Request {
+
   required uint32 seq = 1;
 
   required uint64 playerId = 2;
@@ -9,7 +10,6 @@ message Request {
 
   optional uint32 entityId = 4;
 
-  /* Functions */
   optional Empty getInfo = 8;
 
   optional Empty getTime = 9;
@@ -33,6 +33,72 @@ message Request {
   optional Empty getMapMarkers = 18;
 
   // optional AppCameraFrameRequest getCameraFrame = 19;
+
+}
+
+message Message {
+
+  optional Response response = 1;
+
+  // optional Broadcast broadcast = 2;
+
+}
+
+message Response {
+
+  required uint32 seq = 1;
+
+  optional Empty success = 4;
+
+  optional Error error = 5;
+
+  optional Info info = 6;
+
+  // optional Time time = 7;
+
+  // optional Map map = 8;
+
+  // optional TeamInfo teamInfo = 9;
+
+  // optional TeamChat teamChat = 10;
+
+  // optional EntityInfo entityInfo = 11;
+
+  // optional Flag flag = 12;
+
+  // optional MapMarkers mapMarkers = 13;
+
+  // optional CameraFrame cameraFrame = 14;
+
+}
+
+message Error {
+  required string error = 1; 
+}
+
+message Info {
+
+  required string name = 1;
+
+	required string headerImage = 2;
+
+	required string url = 3;
+
+	required string map = 4;
+
+	required uint32 mapSize = 5;
+
+	required uint32 wipeTime = 6;
+
+	required uint32 players = 7;
+
+	required uint32 maxPlayers = 8;
+
+	required uint32 queuedPlayers = 9;
+
+	optional uint32 seed = 10;
+
+	optional uint32 salt = 11;
 
 }
 

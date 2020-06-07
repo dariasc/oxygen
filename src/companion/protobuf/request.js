@@ -493,6 +493,1062 @@ $root.Request = (function() {
     return Request;
 })();
 
+$root.Message = (function() {
+
+    /**
+     * Properties of a Message.
+     * @exports IMessage
+     * @interface IMessage
+     * @property {IResponse|null} [response] Message response
+     */
+
+    /**
+     * Constructs a new Message.
+     * @exports Message
+     * @classdesc Represents a Message.
+     * @implements IMessage
+     * @constructor
+     * @param {IMessage=} [properties] Properties to set
+     */
+    function Message(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Message response.
+     * @member {IResponse|null|undefined} response
+     * @memberof Message
+     * @instance
+     */
+    Message.prototype.response = null;
+
+    /**
+     * Creates a new Message instance using the specified properties.
+     * @function create
+     * @memberof Message
+     * @static
+     * @param {IMessage=} [properties] Properties to set
+     * @returns {Message} Message instance
+     */
+    Message.create = function create(properties) {
+        return new Message(properties);
+    };
+
+    /**
+     * Encodes the specified Message message. Does not implicitly {@link Message.verify|verify} messages.
+     * @function encode
+     * @memberof Message
+     * @static
+     * @param {IMessage} message Message message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Message.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        if (message.response != null && Object.hasOwnProperty.call(message, "response"))
+            $root.Response.encode(message.response, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Message message, length delimited. Does not implicitly {@link Message.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Message
+     * @static
+     * @param {IMessage} message Message message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Message.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Message message from the specified reader or buffer.
+     * @function decode
+     * @memberof Message
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Message} Message
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Message.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Message();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.response = $root.Response.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        return message;
+    };
+
+    /**
+     * Decodes a Message message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Message
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Message} Message
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Message.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Message message.
+     * @function verify
+     * @memberof Message
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Message.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (message.response != null && message.hasOwnProperty("response")) {
+            var error = $root.Response.verify(message.response);
+            if (error)
+                return "response." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a Message message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Message
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Message} Message
+     */
+    Message.fromObject = function fromObject(object) {
+        if (object instanceof $root.Message)
+            return object;
+        var message = new $root.Message();
+        if (object.response != null) {
+            if (typeof object.response !== "object")
+                throw TypeError(".Message.response: object expected");
+            message.response = $root.Response.fromObject(object.response);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Message message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Message
+     * @static
+     * @param {Message} message Message
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Message.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.response = null;
+        if (message.response != null && message.hasOwnProperty("response"))
+            object.response = $root.Response.toObject(message.response, options);
+        return object;
+    };
+
+    /**
+     * Converts this Message to JSON.
+     * @function toJSON
+     * @memberof Message
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Message.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Message;
+})();
+
+$root.Response = (function() {
+
+    /**
+     * Properties of a Response.
+     * @exports IResponse
+     * @interface IResponse
+     * @property {number} seq Response seq
+     * @property {IEmpty|null} [success] Response success
+     * @property {IError|null} [error] Response error
+     * @property {IInfo|null} [info] Response info
+     */
+
+    /**
+     * Constructs a new Response.
+     * @exports Response
+     * @classdesc Represents a Response.
+     * @implements IResponse
+     * @constructor
+     * @param {IResponse=} [properties] Properties to set
+     */
+    function Response(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Response seq.
+     * @member {number} seq
+     * @memberof Response
+     * @instance
+     */
+    Response.prototype.seq = 0;
+
+    /**
+     * Response success.
+     * @member {IEmpty|null|undefined} success
+     * @memberof Response
+     * @instance
+     */
+    Response.prototype.success = null;
+
+    /**
+     * Response error.
+     * @member {IError|null|undefined} error
+     * @memberof Response
+     * @instance
+     */
+    Response.prototype.error = null;
+
+    /**
+     * Response info.
+     * @member {IInfo|null|undefined} info
+     * @memberof Response
+     * @instance
+     */
+    Response.prototype.info = null;
+
+    /**
+     * Creates a new Response instance using the specified properties.
+     * @function create
+     * @memberof Response
+     * @static
+     * @param {IResponse=} [properties] Properties to set
+     * @returns {Response} Response instance
+     */
+    Response.create = function create(properties) {
+        return new Response(properties);
+    };
+
+    /**
+     * Encodes the specified Response message. Does not implicitly {@link Response.verify|verify} messages.
+     * @function encode
+     * @memberof Response
+     * @static
+     * @param {IResponse} message Response message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Response.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        writer.uint32(/* id 1, wireType 0 =*/8).uint32(message.seq);
+        if (message.success != null && Object.hasOwnProperty.call(message, "success"))
+            $root.Empty.encode(message.success, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+        if (message.error != null && Object.hasOwnProperty.call(message, "error"))
+            $root.Error.encode(message.error, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+        if (message.info != null && Object.hasOwnProperty.call(message, "info"))
+            $root.Info.encode(message.info, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Response message, length delimited. Does not implicitly {@link Response.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Response
+     * @static
+     * @param {IResponse} message Response message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Response.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes a Response message from the specified reader or buffer.
+     * @function decode
+     * @memberof Response
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Response} Response
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Response.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Response();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.seq = reader.uint32();
+                break;
+            case 4:
+                message.success = $root.Empty.decode(reader, reader.uint32());
+                break;
+            case 5:
+                message.error = $root.Error.decode(reader, reader.uint32());
+                break;
+            case 6:
+                message.info = $root.Info.decode(reader, reader.uint32());
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        if (!message.hasOwnProperty("seq"))
+            throw $util.ProtocolError("missing required 'seq'", { instance: message });
+        return message;
+    };
+
+    /**
+     * Decodes a Response message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Response
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Response} Response
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Response.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies a Response message.
+     * @function verify
+     * @memberof Response
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Response.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (!$util.isInteger(message.seq))
+            return "seq: integer expected";
+        if (message.success != null && message.hasOwnProperty("success")) {
+            var error = $root.Empty.verify(message.success);
+            if (error)
+                return "success." + error;
+        }
+        if (message.error != null && message.hasOwnProperty("error")) {
+            var error = $root.Error.verify(message.error);
+            if (error)
+                return "error." + error;
+        }
+        if (message.info != null && message.hasOwnProperty("info")) {
+            var error = $root.Info.verify(message.info);
+            if (error)
+                return "info." + error;
+        }
+        return null;
+    };
+
+    /**
+     * Creates a Response message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Response
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Response} Response
+     */
+    Response.fromObject = function fromObject(object) {
+        if (object instanceof $root.Response)
+            return object;
+        var message = new $root.Response();
+        if (object.seq != null)
+            message.seq = object.seq >>> 0;
+        if (object.success != null) {
+            if (typeof object.success !== "object")
+                throw TypeError(".Response.success: object expected");
+            message.success = $root.Empty.fromObject(object.success);
+        }
+        if (object.error != null) {
+            if (typeof object.error !== "object")
+                throw TypeError(".Response.error: object expected");
+            message.error = $root.Error.fromObject(object.error);
+        }
+        if (object.info != null) {
+            if (typeof object.info !== "object")
+                throw TypeError(".Response.info: object expected");
+            message.info = $root.Info.fromObject(object.info);
+        }
+        return message;
+    };
+
+    /**
+     * Creates a plain object from a Response message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Response
+     * @static
+     * @param {Response} message Response
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Response.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.seq = 0;
+            object.success = null;
+            object.error = null;
+            object.info = null;
+        }
+        if (message.seq != null && message.hasOwnProperty("seq"))
+            object.seq = message.seq;
+        if (message.success != null && message.hasOwnProperty("success"))
+            object.success = $root.Empty.toObject(message.success, options);
+        if (message.error != null && message.hasOwnProperty("error"))
+            object.error = $root.Error.toObject(message.error, options);
+        if (message.info != null && message.hasOwnProperty("info"))
+            object.info = $root.Info.toObject(message.info, options);
+        return object;
+    };
+
+    /**
+     * Converts this Response to JSON.
+     * @function toJSON
+     * @memberof Response
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Response.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Response;
+})();
+
+$root.Error = (function() {
+
+    /**
+     * Properties of an Error.
+     * @exports IError
+     * @interface IError
+     * @property {string} error Error error
+     */
+
+    /**
+     * Constructs a new Error.
+     * @exports Error
+     * @classdesc Represents an Error.
+     * @implements IError
+     * @constructor
+     * @param {IError=} [properties] Properties to set
+     */
+    function Error(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Error error.
+     * @member {string} error
+     * @memberof Error
+     * @instance
+     */
+    Error.prototype.error = "";
+
+    /**
+     * Creates a new Error instance using the specified properties.
+     * @function create
+     * @memberof Error
+     * @static
+     * @param {IError=} [properties] Properties to set
+     * @returns {Error} Error instance
+     */
+    Error.create = function create(properties) {
+        return new Error(properties);
+    };
+
+    /**
+     * Encodes the specified Error message. Does not implicitly {@link Error.verify|verify} messages.
+     * @function encode
+     * @memberof Error
+     * @static
+     * @param {IError} message Error message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Error.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        writer.uint32(/* id 1, wireType 2 =*/10).string(message.error);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Error message, length delimited. Does not implicitly {@link Error.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Error
+     * @static
+     * @param {IError} message Error message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Error.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an Error message from the specified reader or buffer.
+     * @function decode
+     * @memberof Error
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Error} Error
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Error.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Error();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.error = reader.string();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        if (!message.hasOwnProperty("error"))
+            throw $util.ProtocolError("missing required 'error'", { instance: message });
+        return message;
+    };
+
+    /**
+     * Decodes an Error message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Error
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Error} Error
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Error.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an Error message.
+     * @function verify
+     * @memberof Error
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Error.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (!$util.isString(message.error))
+            return "error: string expected";
+        return null;
+    };
+
+    /**
+     * Creates an Error message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Error
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Error} Error
+     */
+    Error.fromObject = function fromObject(object) {
+        if (object instanceof $root.Error)
+            return object;
+        var message = new $root.Error();
+        if (object.error != null)
+            message.error = String(object.error);
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an Error message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Error
+     * @static
+     * @param {Error} message Error
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Error.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults)
+            object.error = "";
+        if (message.error != null && message.hasOwnProperty("error"))
+            object.error = message.error;
+        return object;
+    };
+
+    /**
+     * Converts this Error to JSON.
+     * @function toJSON
+     * @memberof Error
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Error.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Error;
+})();
+
+$root.Info = (function() {
+
+    /**
+     * Properties of an Info.
+     * @exports IInfo
+     * @interface IInfo
+     * @property {string} name Info name
+     * @property {string} headerImage Info headerImage
+     * @property {string} url Info url
+     * @property {string} map Info map
+     * @property {number} mapSize Info mapSize
+     * @property {number} wipeTime Info wipeTime
+     * @property {number} players Info players
+     * @property {number} maxPlayers Info maxPlayers
+     * @property {number} queuedPlayers Info queuedPlayers
+     * @property {number|null} [seed] Info seed
+     * @property {number|null} [salt] Info salt
+     */
+
+    /**
+     * Constructs a new Info.
+     * @exports Info
+     * @classdesc Represents an Info.
+     * @implements IInfo
+     * @constructor
+     * @param {IInfo=} [properties] Properties to set
+     */
+    function Info(properties) {
+        if (properties)
+            for (var keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                if (properties[keys[i]] != null)
+                    this[keys[i]] = properties[keys[i]];
+    }
+
+    /**
+     * Info name.
+     * @member {string} name
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.name = "";
+
+    /**
+     * Info headerImage.
+     * @member {string} headerImage
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.headerImage = "";
+
+    /**
+     * Info url.
+     * @member {string} url
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.url = "";
+
+    /**
+     * Info map.
+     * @member {string} map
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.map = "";
+
+    /**
+     * Info mapSize.
+     * @member {number} mapSize
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.mapSize = 0;
+
+    /**
+     * Info wipeTime.
+     * @member {number} wipeTime
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.wipeTime = 0;
+
+    /**
+     * Info players.
+     * @member {number} players
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.players = 0;
+
+    /**
+     * Info maxPlayers.
+     * @member {number} maxPlayers
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.maxPlayers = 0;
+
+    /**
+     * Info queuedPlayers.
+     * @member {number} queuedPlayers
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.queuedPlayers = 0;
+
+    /**
+     * Info seed.
+     * @member {number} seed
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.seed = 0;
+
+    /**
+     * Info salt.
+     * @member {number} salt
+     * @memberof Info
+     * @instance
+     */
+    Info.prototype.salt = 0;
+
+    /**
+     * Creates a new Info instance using the specified properties.
+     * @function create
+     * @memberof Info
+     * @static
+     * @param {IInfo=} [properties] Properties to set
+     * @returns {Info} Info instance
+     */
+    Info.create = function create(properties) {
+        return new Info(properties);
+    };
+
+    /**
+     * Encodes the specified Info message. Does not implicitly {@link Info.verify|verify} messages.
+     * @function encode
+     * @memberof Info
+     * @static
+     * @param {IInfo} message Info message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Info.encode = function encode(message, writer) {
+        if (!writer)
+            writer = $Writer.create();
+        writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
+        writer.uint32(/* id 2, wireType 2 =*/18).string(message.headerImage);
+        writer.uint32(/* id 3, wireType 2 =*/26).string(message.url);
+        writer.uint32(/* id 4, wireType 2 =*/34).string(message.map);
+        writer.uint32(/* id 5, wireType 0 =*/40).uint32(message.mapSize);
+        writer.uint32(/* id 6, wireType 0 =*/48).uint32(message.wipeTime);
+        writer.uint32(/* id 7, wireType 0 =*/56).uint32(message.players);
+        writer.uint32(/* id 8, wireType 0 =*/64).uint32(message.maxPlayers);
+        writer.uint32(/* id 9, wireType 0 =*/72).uint32(message.queuedPlayers);
+        if (message.seed != null && Object.hasOwnProperty.call(message, "seed"))
+            writer.uint32(/* id 10, wireType 0 =*/80).uint32(message.seed);
+        if (message.salt != null && Object.hasOwnProperty.call(message, "salt"))
+            writer.uint32(/* id 11, wireType 0 =*/88).uint32(message.salt);
+        return writer;
+    };
+
+    /**
+     * Encodes the specified Info message, length delimited. Does not implicitly {@link Info.verify|verify} messages.
+     * @function encodeDelimited
+     * @memberof Info
+     * @static
+     * @param {IInfo} message Info message or plain object to encode
+     * @param {$protobuf.Writer} [writer] Writer to encode to
+     * @returns {$protobuf.Writer} Writer
+     */
+    Info.encodeDelimited = function encodeDelimited(message, writer) {
+        return this.encode(message, writer).ldelim();
+    };
+
+    /**
+     * Decodes an Info message from the specified reader or buffer.
+     * @function decode
+     * @memberof Info
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @param {number} [length] Message length if known beforehand
+     * @returns {Info} Info
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Info.decode = function decode(reader, length) {
+        if (!(reader instanceof $Reader))
+            reader = $Reader.create(reader);
+        var end = length === undefined ? reader.len : reader.pos + length, message = new $root.Info();
+        while (reader.pos < end) {
+            var tag = reader.uint32();
+            switch (tag >>> 3) {
+            case 1:
+                message.name = reader.string();
+                break;
+            case 2:
+                message.headerImage = reader.string();
+                break;
+            case 3:
+                message.url = reader.string();
+                break;
+            case 4:
+                message.map = reader.string();
+                break;
+            case 5:
+                message.mapSize = reader.uint32();
+                break;
+            case 6:
+                message.wipeTime = reader.uint32();
+                break;
+            case 7:
+                message.players = reader.uint32();
+                break;
+            case 8:
+                message.maxPlayers = reader.uint32();
+                break;
+            case 9:
+                message.queuedPlayers = reader.uint32();
+                break;
+            case 10:
+                message.seed = reader.uint32();
+                break;
+            case 11:
+                message.salt = reader.uint32();
+                break;
+            default:
+                reader.skipType(tag & 7);
+                break;
+            }
+        }
+        if (!message.hasOwnProperty("name"))
+            throw $util.ProtocolError("missing required 'name'", { instance: message });
+        if (!message.hasOwnProperty("headerImage"))
+            throw $util.ProtocolError("missing required 'headerImage'", { instance: message });
+        if (!message.hasOwnProperty("url"))
+            throw $util.ProtocolError("missing required 'url'", { instance: message });
+        if (!message.hasOwnProperty("map"))
+            throw $util.ProtocolError("missing required 'map'", { instance: message });
+        if (!message.hasOwnProperty("mapSize"))
+            throw $util.ProtocolError("missing required 'mapSize'", { instance: message });
+        if (!message.hasOwnProperty("wipeTime"))
+            throw $util.ProtocolError("missing required 'wipeTime'", { instance: message });
+        if (!message.hasOwnProperty("players"))
+            throw $util.ProtocolError("missing required 'players'", { instance: message });
+        if (!message.hasOwnProperty("maxPlayers"))
+            throw $util.ProtocolError("missing required 'maxPlayers'", { instance: message });
+        if (!message.hasOwnProperty("queuedPlayers"))
+            throw $util.ProtocolError("missing required 'queuedPlayers'", { instance: message });
+        return message;
+    };
+
+    /**
+     * Decodes an Info message from the specified reader or buffer, length delimited.
+     * @function decodeDelimited
+     * @memberof Info
+     * @static
+     * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+     * @returns {Info} Info
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    Info.decodeDelimited = function decodeDelimited(reader) {
+        if (!(reader instanceof $Reader))
+            reader = new $Reader(reader);
+        return this.decode(reader, reader.uint32());
+    };
+
+    /**
+     * Verifies an Info message.
+     * @function verify
+     * @memberof Info
+     * @static
+     * @param {Object.<string,*>} message Plain object to verify
+     * @returns {string|null} `null` if valid, otherwise the reason why it is not
+     */
+    Info.verify = function verify(message) {
+        if (typeof message !== "object" || message === null)
+            return "object expected";
+        if (!$util.isString(message.name))
+            return "name: string expected";
+        if (!$util.isString(message.headerImage))
+            return "headerImage: string expected";
+        if (!$util.isString(message.url))
+            return "url: string expected";
+        if (!$util.isString(message.map))
+            return "map: string expected";
+        if (!$util.isInteger(message.mapSize))
+            return "mapSize: integer expected";
+        if (!$util.isInteger(message.wipeTime))
+            return "wipeTime: integer expected";
+        if (!$util.isInteger(message.players))
+            return "players: integer expected";
+        if (!$util.isInteger(message.maxPlayers))
+            return "maxPlayers: integer expected";
+        if (!$util.isInteger(message.queuedPlayers))
+            return "queuedPlayers: integer expected";
+        if (message.seed != null && message.hasOwnProperty("seed"))
+            if (!$util.isInteger(message.seed))
+                return "seed: integer expected";
+        if (message.salt != null && message.hasOwnProperty("salt"))
+            if (!$util.isInteger(message.salt))
+                return "salt: integer expected";
+        return null;
+    };
+
+    /**
+     * Creates an Info message from a plain object. Also converts values to their respective internal types.
+     * @function fromObject
+     * @memberof Info
+     * @static
+     * @param {Object.<string,*>} object Plain object
+     * @returns {Info} Info
+     */
+    Info.fromObject = function fromObject(object) {
+        if (object instanceof $root.Info)
+            return object;
+        var message = new $root.Info();
+        if (object.name != null)
+            message.name = String(object.name);
+        if (object.headerImage != null)
+            message.headerImage = String(object.headerImage);
+        if (object.url != null)
+            message.url = String(object.url);
+        if (object.map != null)
+            message.map = String(object.map);
+        if (object.mapSize != null)
+            message.mapSize = object.mapSize >>> 0;
+        if (object.wipeTime != null)
+            message.wipeTime = object.wipeTime >>> 0;
+        if (object.players != null)
+            message.players = object.players >>> 0;
+        if (object.maxPlayers != null)
+            message.maxPlayers = object.maxPlayers >>> 0;
+        if (object.queuedPlayers != null)
+            message.queuedPlayers = object.queuedPlayers >>> 0;
+        if (object.seed != null)
+            message.seed = object.seed >>> 0;
+        if (object.salt != null)
+            message.salt = object.salt >>> 0;
+        return message;
+    };
+
+    /**
+     * Creates a plain object from an Info message. Also converts values to other types if specified.
+     * @function toObject
+     * @memberof Info
+     * @static
+     * @param {Info} message Info
+     * @param {$protobuf.IConversionOptions} [options] Conversion options
+     * @returns {Object.<string,*>} Plain object
+     */
+    Info.toObject = function toObject(message, options) {
+        if (!options)
+            options = {};
+        var object = {};
+        if (options.defaults) {
+            object.name = "";
+            object.headerImage = "";
+            object.url = "";
+            object.map = "";
+            object.mapSize = 0;
+            object.wipeTime = 0;
+            object.players = 0;
+            object.maxPlayers = 0;
+            object.queuedPlayers = 0;
+            object.seed = 0;
+            object.salt = 0;
+        }
+        if (message.name != null && message.hasOwnProperty("name"))
+            object.name = message.name;
+        if (message.headerImage != null && message.hasOwnProperty("headerImage"))
+            object.headerImage = message.headerImage;
+        if (message.url != null && message.hasOwnProperty("url"))
+            object.url = message.url;
+        if (message.map != null && message.hasOwnProperty("map"))
+            object.map = message.map;
+        if (message.mapSize != null && message.hasOwnProperty("mapSize"))
+            object.mapSize = message.mapSize;
+        if (message.wipeTime != null && message.hasOwnProperty("wipeTime"))
+            object.wipeTime = message.wipeTime;
+        if (message.players != null && message.hasOwnProperty("players"))
+            object.players = message.players;
+        if (message.maxPlayers != null && message.hasOwnProperty("maxPlayers"))
+            object.maxPlayers = message.maxPlayers;
+        if (message.queuedPlayers != null && message.hasOwnProperty("queuedPlayers"))
+            object.queuedPlayers = message.queuedPlayers;
+        if (message.seed != null && message.hasOwnProperty("seed"))
+            object.seed = message.seed;
+        if (message.salt != null && message.hasOwnProperty("salt"))
+            object.salt = message.salt;
+        return object;
+    };
+
+    /**
+     * Converts this Info to JSON.
+     * @function toJSON
+     * @memberof Info
+     * @instance
+     * @returns {Object.<string,*>} JSON object
+     */
+    Info.prototype.toJSON = function toJSON() {
+        return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+    };
+
+    return Info;
+})();
+
 $root.Empty = (function() {
 
     /**
