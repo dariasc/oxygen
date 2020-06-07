@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+message Request {
+  required uint32 seq = 1;
+
+  required uint64 playerId = 2;
+
+  required int32 playerToken = 3;
+
+  optional uint32 entityId = 4;
+
+  /* Functions */
+  optional Empty getInfo = 8;
+
+  optional Empty getTime = 9;
+
+  optional Empty getMap = 10;
+
+  optional Empty getTeamInfo = 11;
+
+  optional Empty getTeamChat = 12;
+
+  // optional AppSendMessage sendTeamMessage = 13;
+
+  optional Empty getEntityInfo = 14;
+
+  // optional AppSetEntityValue setEntityValue = 15;
+
+  optional Empty checkSubscription = 16;
+
+  // optional AppFlag setSubscription = 17;
+
+  optional Empty getMapMarkers = 18;
+
+  // optional AppCameraFrameRequest getCameraFrame = 19;
+
+}
+
+message Empty {}

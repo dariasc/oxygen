@@ -20,8 +20,9 @@
     "websocket": "^1.0.31"
   },
   "devDependencies": {
-    "@types/uuid": "^8.0.0",
     "@types/node-fetch": "^2.5.7",
+    "@types/uuid": "^8.0.0",
+    "@types/websocket": "^1.0.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-prettier": "^6.11.0",
