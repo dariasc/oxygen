@@ -25,7 +25,7 @@ export default class Pair implements Command {
     }
 
     const register = new MessageEmbed()
-      .setTitle('Registered Notification Service');
+      .setTitle('Registered notification service');
     msg.channel.send(register);
 
     await listener.pushToExpo();
@@ -36,7 +36,17 @@ export default class Pair implements Command {
       .setTitle('Listenening for `pair` requests');
     msg.channel.send(listening);
 
-    listener.listen((notification: NotificationContent) => {
+    listener.listen((server: any) => {
+      if (server.type != 'server') return;
+
+      const notification = new MessageEmbed()
+        .setTitle(server.name)
+        .setDescription(server.desc.replace(/\\n/g, '\n'))
+        .setImage(server.img)
+        .addField('Id', `\`${server.id}\``)
+        .addField('Ip', `\`${server.ip}\``, true)
+        .addField('Port', `\`${server.port}\``, true);
+
       msg.channel.send(notification);
     })
   }

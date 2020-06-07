@@ -51,18 +51,20 @@ declare module 'push-receiver' {
 
   // table 2b. - https://firebase.google.com/docs/cloud-messaging/http-server-ref
   export interface NotificationContent {
-    title?: string;
-    body?: string;
-    android_channel_id?: string;
-    icon?: string;
-    sound?: string;
-    tag?: string;
-    color?: string;
-    click_action?: string;
-    body_loc_key?: string;
-    body_loc_args?: string; // JSON array as string
-    title_loc_key?: string;
-    title_loc_args?: string; // JSON array as string
+    data: {
+      title?: string;
+      body?: string;
+      android_channel_id?: string;
+      icon?: string;
+      sound?: string;
+      tag?: string;
+      color?: string;
+      click_action?: string;
+      body_loc_key?: string;
+      body_loc_args?: string; // JSON array as string
+      title_loc_key?: string;
+      title_loc_args?: string; // JSON array as string
+    }
   }
 
   declare class Client {

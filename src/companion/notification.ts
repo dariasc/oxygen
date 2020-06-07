@@ -65,7 +65,9 @@ export default class NotificationListener {
     if (!this.credentials) return;
 
     listen(this.credentials, ({ notification }) => {
-      callback(notification);
+      if (!notification.data.body) return;
+      
+      callback(JSON.parse(notification.data.body));
     });
   }
 
