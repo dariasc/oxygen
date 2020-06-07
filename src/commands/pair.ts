@@ -2,7 +2,6 @@ import { Client, Message, MessageEmbed } from 'discord.js';
 import Command from '../struct/command';
 import settings from '../database';
 import NotificationListener from '../companion/notification';
-import { NotificationContent } from 'push-receiver';
 
 export default class Pair implements Command {
   name = 'pair';
@@ -36,8 +35,15 @@ export default class Pair implements Command {
       .setTitle('Listenening for `pair` requests');
     msg.channel.send(listening);
 
+    // TODO: Create interface for this type
     listener.listen((server: any) => {
       if (server.type != 'server') return;
+
+      const config = settings.ensure(msg.guild!.id);
+      config.playerToken = parseInt(server.playerToken);
+      config.ip = server.ip;
+      config.port = parseInt(server.port);
+      settings.set(msg.guild!.id, config);
 
       const notification = new MessageEmbed()
         .setTitle(server.name)

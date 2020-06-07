@@ -5,7 +5,7 @@ class Settings extends Enmap<string, Config> {
   defaults: Config = {
     prefix: ';',
     authToken: '',
-    playerToken: '',
+    playerToken: 0,
     ip: '',
     port: 0,
   };
@@ -25,7 +25,7 @@ class Settings extends Enmap<string, Config> {
 interface Config {
   prefix: string,
   authToken: string,
-  playerToken: string,
+  playerToken: number,
   ip: string,
   port: number,
 }
