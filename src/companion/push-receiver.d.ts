@@ -5,7 +5,6 @@
 */
 
 declare module 'push-receiver' {
-
   export function listen(
     credentials: Credentials,
     notificationCallback: (notification: NotificationEnvelope) => unknown,
@@ -14,7 +13,7 @@ declare module 'push-receiver' {
   export function register(
     senderId: string,
     options?: {
-      noFcmRegistration?: false | null,
+      noFcmRegistration?: false | null;
     },
   ): Promise<Credentials & FcmData>;
 
@@ -40,7 +39,7 @@ declare module 'push-receiver' {
   export interface FcmData {
     token: string;
     pushSet: string;
-  };
+  }
 
   export type PersistentId = string;
 
@@ -64,13 +63,15 @@ declare module 'push-receiver' {
       body_loc_args?: string; // JSON array as string
       title_loc_key?: string;
       title_loc_args?: string; // JSON array as string
-    }
+    };
   }
 
   declare class Client {
-    on(event: 'ON_NOTIFICATION_RECEIVED', listener: (notification: NotificationEnvelope) => void): this;
+    on(
+      event: 'ON_NOTIFICATION_RECEIVED',
+      listener: (notification: NotificationEnvelope) => void,
+    ): this;
     connect(): Promise<void>;
     destroy(): void;
   }
-
 }

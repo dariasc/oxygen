@@ -1,7 +1,6 @@
 import Enmap from 'enmap';
 
 class Settings extends Enmap<string, Config> {
-
   defaults: Config = {
     prefix: ';',
     authToken: '',
@@ -19,15 +18,14 @@ class Settings extends Enmap<string, Config> {
   ensure(key: string) {
     return super.ensure(key, this.defaults);
   }
-
 }
 
 export interface Config {
-  prefix: string,
-  authToken: string,
-  playerToken: number,
-  ip: string,
-  port: number,
+  prefix: string;
+  authToken: string;
+  playerToken: number;
+  ip: string;
+  port: number;
 }
 
 const settings = new Settings({

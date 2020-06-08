@@ -1,4 +1,4 @@
-import { Client, Message, MessageEmbed} from 'discord.js';
+import { Client, Message, MessageEmbed } from 'discord.js';
 import Command from '../struct/command';
 import settings from '../database';
 

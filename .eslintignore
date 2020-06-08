@@ -1,1 +1,2 @@
-src/companion/protobuf
+src/companion/protobuf/
+dist/

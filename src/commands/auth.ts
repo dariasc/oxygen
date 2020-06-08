@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 import { createServer } from 'http';
 
 let discord: Client;
-let executing = new Enmap<string, string>();
+const executing = new Enmap<string, string>();
 
 export default class Auth implements Command {
   name = 'auth';
@@ -15,7 +15,7 @@ export default class Auth implements Command {
     createServer((req, res) => {
       const requestUrl = new URL(req.url!, `http://${req.headers.host}`);
       this.handleToken(requestUrl.searchParams, requestUrl.pathname);
-  
+
       res.writeHead(302, {
         // TODO: Decide where we redirect. This screen shows an ugly alert after a while.
         Location: 'http://companion-rust.facepunch.com/app',
@@ -65,10 +65,8 @@ export default class Auth implements Command {
     config.authToken = token;
     settings.set(guild, config);
 
-    const steam = new URL(
-      'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/',
-    );
-    
+    const steam = new URL('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/');
+
     steam.searchParams.append('key', process.env.STEAM_KEY!);
     steam.searchParams.append('steamids', steamid);
 
@@ -76,7 +74,7 @@ export default class Auth implements Command {
       .then((res) => res.json())
       .then((res) => res.response.players[0]);
 
-    const channelId = executing.get(guild)
+    const channelId = executing.get(guild);
     if (!channelId) {
       console.log('[handleToken] invalid channelId found');
       return;
@@ -92,9 +90,7 @@ export default class Auth implements Command {
 
     const verification = new MessageEmbed()
       .setTitle('Token Verification Complete')
-      .setDescription(
-        'You may now pair a supported Rust server using the `pair` command',
-      )
+      .setDescription('You may now pair a supported Rust server using the `pair` command')
       .setColor('#33CC33');
     channel.send(verification);
   }

@@ -12,4 +12,4 @@ export default class Config implements Command {
 
     msg.channel.send(JSON.stringify(config));
   }
-};
+}

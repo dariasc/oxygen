@@ -3,14 +3,14 @@ import Command from './struct/command';
 import Enmap from 'enmap';
 import fs from 'fs';
 import dotenv from 'dotenv';
-import settings from './database'
+import settings from './database';
 
 dotenv.config();
 const client = new Client();
 
 settings.init();
 
-let commands = new Enmap<string, Command>();
+const commands = new Enmap<string, Command>();
 
 fs.readdir('./src/commands/', (err, files) => {
   if (err) return console.error(err);
@@ -40,7 +40,7 @@ client.on('message', (msg) => {
   if (msg.author.bot) return;
   if (!msg.guild) return;
 
-  const conf = settings.ensure(msg.guild.id,);
+  const conf = settings.ensure(msg.guild.id);
 
   if (!msg.content.startsWith(conf.prefix)) return;
 
