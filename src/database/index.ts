@@ -22,7 +22,7 @@ class Settings extends Enmap<string, Config> {
 
 }
 
-interface Config {
+export interface Config {
   prefix: string,
   authToken: string,
   playerToken: number,

@@ -2,9 +2,9 @@ import Long from 'long';
 import { client as WebSocketClient } from 'websocket';
 import { Request, Response, Empty } from './protobuf/request';
 import fetch, { Headers } from 'node-fetch';
-import settings from '../database';
+import settings, { Config } from '../database';
 
-let config;
+let config: Config;
 const socket = new WebSocketClient();
 
 socket.on('connect', (connection) => {
