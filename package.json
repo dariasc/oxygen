@@ -4,6 +4,9 @@
   "description": "A bot that interfaces with Rust's Companion API",
   "main": "index.js",
   "scripts": {
+    "build": "npm run build:json && npm run build:types",
+    "build:json": "cd src/companion/protobuf && npx pbjs -t json-module -w commonjs -o bundle.js request.proto",
+    "build:types": "cd src/companion/protobuf && npx pbjs -t static-module request.proto | pbts -o bundle.d.ts -",
     "dev": "ts-node-dev --poll src/bot.ts"
   },
   "author": "Diego Arias",

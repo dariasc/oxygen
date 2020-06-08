@@ -1,6 +1,6 @@
 import Long from 'long';
 import { client as WebSocketClient } from 'websocket';
-import { Request, Response, Empty } from './protobuf/request';
+import { Request, Message, Empty } from './protobuf/bundle';
 import fetch, { Headers } from 'node-fetch';
 import settings, { Config } from '../database';
 
@@ -17,11 +17,11 @@ socket.on('connect', (connection) => {
   connection.on('message', (message) => {
     if (!message.binaryData) return;
 
-    const response = Response.decode(message.binaryData)
+    const response = Message.decode(message.binaryData)
     console.log(response);
   });
 
-  const data = Request.encode({seq: 1, playerId: Long.fromValue('76561198176221590'), playerToken: config.playerToken, getInfo: new Empty() }).finish();
+  const data = Request.encode({seq: 1, playerId: Long.fromValue('76561198176221590'), playerToken: config.playerToken, getInfo: Empty.create() }).finish();
   connection.sendBytes(Buffer.from(data));
 });
 
