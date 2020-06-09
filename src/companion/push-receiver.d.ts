@@ -1,7 +1,6 @@
-/* Credit to https://github.com/selfisekai 
-   from here https://github.com/MatthieuLemoine/push-receiver/pull/35
-
-   Using this file until it's merged upstream.
+/* 
+    Credit to https://github.com/selfisekai from here https://github.com/MatthieuLemoine/push-receiver/pull/35
+    Using this file until it's merged upstream.
 */
 
 declare module 'push-receiver' {
@@ -48,21 +47,15 @@ declare module 'push-receiver' {
     persistentId: PersistentId;
   }
 
-  // table 2b. - https://firebase.google.com/docs/cloud-messaging/http-server-ref
   export interface NotificationContent {
     data: {
       title?: string;
       body?: string;
-      android_channel_id?: string;
+      channelId?: string;
       icon?: string;
       sound?: string;
       tag?: string;
       color?: string;
-      click_action?: string;
-      body_loc_key?: string;
-      body_loc_args?: string; // JSON array as string
-      title_loc_key?: string;
-      title_loc_args?: string; // JSON array as string
     };
   }
 

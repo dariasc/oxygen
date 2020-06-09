@@ -1,4 +1,4 @@
-import { register, listen, Credentials } from 'push-receiver';
+import { register, listen, Credentials, Client } from 'push-receiver';
 import { v4 as uuidv4 } from 'uuid';
 import fetch from 'node-fetch';
 
@@ -6,6 +6,7 @@ const senderId = '976529667804';
 
 export default class NotificationListener {
   credentials?: Credentials;
+  client?: Client;
   expoToken = '';
   authToken = '';
 
@@ -20,10 +21,7 @@ export default class NotificationListener {
       console.log(`[notificationService] registration failed: ${error}`);
       return false;
     }
-    return true;
-  }
 
-  async pushToExpo(): Promise<void> {
     const getExpoPushToken = {
       deviceId: uuidv4(),
       experienceId: '@facepunch/RustCompanion',
@@ -41,9 +39,7 @@ export default class NotificationListener {
       body: JSON.stringify(getExpoPushToken),
     }).then((res) => res.json());
     this.expoToken = expo.data.expoPushToken;
-  }
 
-  async pushToFacepunch(): Promise<void> {
     const pushRegister = {
       AuthToken: this.authToken,
       DeviceId: 'oxygen',
@@ -58,15 +54,44 @@ export default class NotificationListener {
       },
       body: JSON.stringify(pushRegister),
     }).then((res) => res.json());
+
+    return true;
   }
 
-  async listen(): Promise<unknown> {
-    if (!this.credentials) return;
+  async listen(): Promise<Notification> {
+    return new Promise(async (resolve, reject) => {
+      if (!this.credentials) {
+        return reject('Push notification credentials not available. This should never happen.');
+      }
 
-    listen(this.credentials, ({ notification }) => {
-      if (!notification.data.body) return;
+      this.client = await listen(this.credentials, ({ notification }) => {
+        if (!notification.data.body) return;
 
-      return JSON.parse(notification.data.body);
+        if (notification.data.channelId === 'pairing') {
+          this.destroy();
+          return resolve(JSON.parse(notification.data.body) as Notification);
+        }
+      });
     });
   }
+
+  destroy() {
+    if (this.client) {
+      this.client.destroy();
+    }
+  }
+}
+
+// TODO: Add support for more types of pair notifications
+interface Notification {
+  type: string;
+  name: string;
+  id: string;
+  ip: string;
+  port: string;
+  desc: string;
+  url: string;
+  img: string;
+  playerId: string;
+  playerToken: string;
 }

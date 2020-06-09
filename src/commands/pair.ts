@@ -13,6 +13,9 @@ export default class Pair implements Command {
       return;
     }
 
+    const register = new MessageEmbed().setTitle('Setting up notification listener');
+    msg.channel.send(register);
+
     const listener = new NotificationListener(authToken);
     const registration = await listener.register();
     if (!registration) {
@@ -20,21 +23,9 @@ export default class Pair implements Command {
       return;
     }
 
-    const register = new MessageEmbed().setTitle(
-      'Registered notification service',
-    );
-    msg.channel.send(register);
-
-    await listener.pushToExpo();
-
-    await listener.pushToFacepunch();
-
-    const listening = new MessageEmbed().setTitle(
-      'Listenening for `pair` requests',
-    );
+    const listening = new MessageEmbed().setTitle('Listenening for `pair` requests');
     msg.channel.send(listening);
 
-    // TODO: Create interface for this type
     const server = await listener.listen();
 
     if (server.type != 'server') return;
@@ -49,8 +40,8 @@ export default class Pair implements Command {
       .setTitle(server.name)
       .setDescription(server.desc.replace(/\\n/g, '\n'))
       .setImage(server.img)
-      .addField('Id', `\`${server.id}\``)
-      .addField('Ip', `\`${server.ip}\``, true)
+      .addField('ID', `\`${server.id}\``)
+      .addField('IP', `\`${server.ip}\``, true)
       .addField('Port', `\`${server.port}\``, true);
 
     msg.channel.send(notification);
