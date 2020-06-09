@@ -7,7 +7,7 @@ export default class Pair implements Command {
   name = 'pair';
 
   async run(client: Client, msg: Message) {
-    const authToken = settings.ensure(msg.guild!.id).authToken;
+    const authToken = settings.ensure(msg.guild!.id).auth.token;
     if (!authToken) {
       msg.channel.send('You have not authenticated yet. Use `auth`');
       return;
@@ -31,9 +31,9 @@ export default class Pair implements Command {
     if (server.type != 'server') return;
 
     const config = settings.ensure(msg.guild!.id);
-    config.playerToken = parseInt(server.playerToken);
-    config.ip = server.ip;
-    config.port = parseInt(server.port);
+    config.server.token = parseInt(server.playerToken);
+    config.server.ip = server.ip;
+    config.server.port = parseInt(server.port);
     settings.set(msg.guild!.id, config);
 
     const notification = new MessageEmbed()

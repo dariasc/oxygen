@@ -62,7 +62,8 @@ export default class Auth implements Command {
     }
 
     const config = settings.ensure(guild);
-    config.authToken = token;
+    config.auth.token = token;
+    config.auth.steamid = steamid;
     settings.set(guild, config);
 
     const steam = new URL('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/');

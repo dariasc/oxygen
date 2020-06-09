@@ -3,10 +3,15 @@ import Enmap from 'enmap';
 class Settings extends Enmap<string, Config> {
   defaults: Config = {
     prefix: ';',
-    authToken: '',
-    playerToken: 0,
-    ip: '',
-    port: 0,
+    auth: {
+      token: '',
+      steamid: '',
+    },
+    server: {
+      token: 0,
+      ip: '',
+      port: 0,
+    },
   };
 
   init() {
@@ -22,10 +27,15 @@ class Settings extends Enmap<string, Config> {
 
 export interface Config {
   prefix: string;
-  authToken: string;
-  playerToken: number;
-  ip: string;
-  port: number;
+  auth: {
+    token: string;
+    steamid: string;
+  };
+  server: {
+    token: number;
+    ip: string;
+    port: number;
+  };
 }
 
 const settings = new Settings({

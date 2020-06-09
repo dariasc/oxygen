@@ -24,7 +24,7 @@ socket.on('connect', (connection) => {
   const data = Request.encode({
     seq: 1,
     playerId: Long.fromValue('76561198176221590'),
-    playerToken: config.playerToken,
+    playerToken: config.server.token,
     getInfo: Empty.create(),
   }).finish();
   connection.sendBytes(Buffer.from(data));
@@ -55,8 +55,8 @@ export default async function init() {
   const publishedTime = new Date(manifest.publishedTime);
 
   socket.connect(
-    `wss://companion-rust.facepunch.com/game/${config.ip}/${
-      config.port
+    `wss://companion-rust.facepunch.com/game/${config.server.ip}/${
+      config.server.port
     }?v=${publishedTime.valueOf()}`,
   );
 }
