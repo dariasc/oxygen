@@ -20,12 +20,12 @@
     "protobufjs": "^6.9.0",
     "push-receiver": "^2.1.0",
     "uuid": "^8.1.0",
-    "websocket": "^1.0.31"
+    "ws": "^7.3.0"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",
     "@types/uuid": "^8.0.0",
-    "@types/websocket": "^1.0.0",
+    "@types/ws": "^7.2.5",
     "@typescript-eslint/eslint-plugin": "^3.2.0",
     "@typescript-eslint/parser": "^3.2.0",
     "eslint": "^6.8.0",

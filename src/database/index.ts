@@ -14,12 +14,6 @@ class Settings extends Enmap<string, Config> {
     },
   };
 
-  init() {
-    this.defer.then(() => {
-      console.log(`[settings] enmap loaded: ${settings.count} keys`);
-    });
-  }
-
   ensure(key: string) {
     return super.ensure(key, this.defaults);
   }
@@ -40,7 +34,7 @@ export interface Config {
 
 const settings = new Settings({
   name: 'settings',
-  fetchAll: false,
+  fetchAll: true,
   autoFetch: true,
   cloneLevel: 'deep',
 });

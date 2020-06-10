@@ -1,9 +1,10 @@
-import { Client, Message, MessageEmbed } from 'discord.js';
-import Command from '../struct/command';
-import settings from '../database';
+import { Client, Message } from 'discord.js';
+import Long from 'long';
 
-const positive = ':white_check_mark:';
-const negative = ':no_entry_sign:';
+import Command from '../struct/command';
+import connections from '../companion/connection';
+import { IRequest, Empty } from '../companion/protobuf/bundle';
+import settings from '../database';
 
 export default class Status implements Command {
   name = 'status';
@@ -12,15 +13,17 @@ export default class Status implements Command {
     if (!msg.guild) return;
 
     const config = settings.ensure(msg.guild.id);
+    if (!config.server.token) return;
 
-    const authToken = config.authToken ? negative : positive;
-    const playerToken = config.playerToken ? negative : positive;
+    const connection = connections.get(msg.guild.id);
+    if (!connection) return;
 
-    const embed = new MessageEmbed()
-      .setTitle('Status')
-      .addField('Authentication Token', authToken)
-      .addField('Player Token', playerToken);
-
-    msg.channel.send(embed);
+    const getInfo: IRequest = {
+      seq: 50,
+      playerId: Long.fromValue(config.auth.steamid),
+      playerToken: config.server.token,
+      getInfo: Empty.create(),
+    };
+    connection.request(getInfo);
   }
 }

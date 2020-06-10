@@ -1,14 +1,20 @@
 import { Client } from 'discord.js';
-import Command from './struct/command';
 import Enmap from 'enmap';
 import fs from 'fs';
 import dotenv from 'dotenv';
+
 import settings from './database';
+import { connectAll } from './companion/connection';
+import Command from './struct/command';
 
 dotenv.config();
 const client = new Client();
 
-settings.init();
+(async function () {
+  await settings.defer;
+  console.log(`[settings] loaded ${settings.count} configs`);
+  connectAll();
+})();
 
 const commands = new Enmap<string, Command>();
 
