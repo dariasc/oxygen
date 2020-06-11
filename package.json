@@ -4,6 +4,7 @@
   "description": "A bot that interfaces with Rust's Companion API",
   "main": "index.js",
   "scripts": {
+    "postinstall": "patch-package",
     "build": "npm run build:json && npm run build:types",
     "build:json": "cd src/companion/protobuf && npx pbjs -t json-module -w commonjs -o bundle.js request.proto",
     "build:types": "cd src/companion/protobuf && npx pbjs -t static-module request.proto | pbts -o bundle.d.ts -",
@@ -18,6 +19,7 @@
     "dotenv": "^8.2.0",
     "enmap": "^5.2.9",
     "node-fetch": "^2.6.0",
+    "patch-package": "^6.2.2",
     "protobufjs": "^6.9.0",
     "push-receiver": "^2.1.0",
     "uuid": "^8.1.0",
