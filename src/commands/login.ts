@@ -1,23 +1,28 @@
-import Command from '../struct/command';
-import settings from '../database';
-import { Client, Message, MessageEmbed, TextChannel } from 'discord.js';
-import Enmap from 'enmap';
+import { Command } from 'discord-akairo';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import fetch from 'node-fetch';
 import { createServer } from 'http';
 
-let discord: Client;
-const executing = new Enmap<string, string>();
+import settings from '../database';
+import client from '../bot';
 
-export default class Auth implements Command {
-  name = 'auth';
+const loginUrl = 'https://companion-rust.facepunch.com/login';
+const executing = new Map<string, string>();
 
+class Login extends Command {
   constructor() {
+    super('login', {
+      aliases: ['login', 'auth'],
+      channel: 'guild',
+      userPermissions: 'MANAGE_GUILD',
+    });
+
     createServer((req, res) => {
       const requestUrl = new URL(req.url!, `http://${req.headers.host}`);
       this.handleToken(requestUrl.searchParams, requestUrl.pathname);
 
       res.writeHead(302, {
-        // TODO: Decide where we redirect. This screen shows an ugly alert after a while.
+        // @todo Decide where we redirect. This screen shows an ugly alert after a while.
         Location: 'http://companion-rust.facepunch.com/app',
       });
       res.end();
@@ -25,30 +30,18 @@ export default class Auth implements Command {
     console.log('[webserver] auth service started on port 3000');
   }
 
-  async run(client: Client, msg: Message) {
-    // TODO: Change this up
-    if (!discord) {
-      discord = client;
-    }
-    if (!msg.guild || !msg.member) return;
-
-    if (!msg.member.hasPermission('MANAGE_GUILD')) {
-      msg.reply('Insufficient permissions :/');
-    }
-
-    executing.set(msg.guild.id, msg.channel.id);
+  exec(message: Message) {
+    executing.set(message.guild!.id, message.channel.id);
 
     const embed = new MessageEmbed()
       .setTitle('Authentication')
-      .setURL(
-        `https://companion-rust.facepunch.com/login?returnUrl=http://localhost:3000/${msg.guild.id}/`,
-      )
+      .setURL(`${loginUrl}?returnUrl=http://localhost:3000/${message.guild!.id}/`)
       .setDescription(
         `To authenticate with the companion app servers we need an authentication token. 
         To get the token go to this website and login with steam, this will automatically link your token with the bot.`,
       )
       .setColor('#00FFFF');
-    msg.channel.send(embed);
+    message.channel.send(embed);
   }
 
   async handleToken(searchParams: URLSearchParams, pathName: string) {
@@ -57,7 +50,7 @@ export default class Auth implements Command {
     const guild = pathName.replace(/\//g, '');
 
     if (!token || !steamid) {
-      console.log('[handleToken] inavlid steamid or token');
+      console.log('[handleToken] invalid steamid or token');
       return;
     }
 
@@ -68,7 +61,7 @@ export default class Auth implements Command {
 
     const steam = new URL('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/');
 
-    steam.searchParams.append('key', process.env.STEAM_KEY!);
+    steam.searchParams.append('key', process.env.STEAM_API_KEY!);
     steam.searchParams.append('steamids', steamid);
 
     const steamAccount = await fetch(steam, {})
@@ -80,7 +73,7 @@ export default class Auth implements Command {
       console.log('[handleToken] invalid channelId found');
       return;
     }
-    const channel = discord.channels.cache.get(channelId) as TextChannel;
+    const channel = client.channels.cache.get(channelId) as TextChannel;
     if (!channel) return;
 
     const steamData = new MessageEmbed()
@@ -96,3 +89,5 @@ export default class Auth implements Command {
     channel.send(verification);
   }
 }
+
+export default Login;

@@ -1,40 +1,46 @@
-import { Client, Message, MessageEmbed } from 'discord.js';
-import Command from '../struct/command';
+import { Command } from 'discord-akairo';
+import { Message, MessageEmbed } from 'discord.js';
+
 import settings from '../database';
 import NotificationListener from '../companion/notification';
 
-export default class Pair implements Command {
+class Pair extends Command {
   name = 'pair';
+  constructor() {
+    super('pair', {
+      aliases: ['pair'],
+    });
+  }
 
-  async run(client: Client, msg: Message) {
-    const authToken = settings.ensure(msg.guild!.id).auth.token;
+  async exec(message: Message) {
+    const authToken = settings.ensure(message.guild!.id).auth.token;
     if (!authToken) {
-      msg.channel.send('You have not authenticated yet. Use `auth`');
+      message.channel.send('You have not authenticated yet. Use `auth`');
       return;
     }
 
     const register = new MessageEmbed().setTitle('Setting up notification listener');
-    msg.channel.send(register);
+    message.channel.send(register);
 
     const listener = new NotificationListener(authToken);
     const registration = await listener.register();
     if (!registration) {
-      msg.channel.send('Could not register the notification listener');
+      message.channel.send('Could not register the notification listener');
       return;
     }
 
     const listening = new MessageEmbed().setTitle('Listenening for `pair` requests');
-    msg.channel.send(listening);
+    message.channel.send(listening);
 
     const server = await listener.listen();
 
     if (server.type != 'server') return;
 
-    const config = settings.ensure(msg.guild!.id);
+    const config = settings.ensure(message.guild!.id);
     config.server.token = parseInt(server.playerToken);
     config.server.ip = server.ip;
     config.server.port = parseInt(server.port);
-    settings.set(msg.guild!.id, config);
+    settings.set(message.guild!.id, config);
 
     const notification = new MessageEmbed()
       .setTitle(server.name)
@@ -44,6 +50,8 @@ export default class Pair implements Command {
       .addField('IP', `\`${server.ip}\``, true)
       .addField('Port', `\`${server.port}\``, true);
 
-    msg.channel.send(notification);
+    message.channel.send(notification);
   }
 }
+
+export default Pair;

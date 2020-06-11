@@ -1,21 +1,23 @@
-import { Client, Message } from 'discord.js';
+import { Command } from 'discord-akairo';
+import { Message } from 'discord.js';
 import Long from 'long';
 
-import Command from '../struct/command';
 import connections from '../companion/connection';
 import { IRequest, Empty } from '../companion/protobuf/bundle';
 import settings from '../database';
 
-export default class Status implements Command {
-  name = 'status';
+class Status extends Command {
+  constructor() {
+    super('status', {
+      aliases: ['status'],
+      channel: 'guild',
+    });
+  }
 
-  async run(client: Client, msg: Message) {
-    if (!msg.guild) return;
+  exec(message: Message) {
+    const config = settings.ensure(message.guild!.id);
 
-    const config = settings.ensure(msg.guild.id);
-    if (!config.server.token) return;
-
-    const connection = connections.get(msg.guild.id);
+    const connection = connections.get(message.guild!.id);
     if (!connection) return;
 
     const getInfo: IRequest = {
@@ -27,3 +29,5 @@ export default class Status implements Command {
     connection.request(getInfo);
   }
 }
+
+export default Status;

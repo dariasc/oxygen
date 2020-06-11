@@ -1,15 +1,22 @@
-import { Client, Message } from 'discord.js';
-import Command from '../struct/command';
+import { Command } from 'discord-akairo';
+import { Message } from 'discord.js';
+
 import settings from '../database';
 
-export default class Config implements Command {
-  name = 'config';
+class Config extends Command {
+  constructor() {
+    super('config', {
+      aliases: ['config', 'conf'],
+      channel: 'guild',
+    });
+  }
 
-  async run(client: Client, msg: Message) {
-    if (!msg.guild) return;
+  exec(message: Message) {
+    const config = settings.ensure(message.guild!.id);
 
-    const config = settings.ensure(msg.guild.id);
-
-    msg.channel.send(JSON.stringify(config));
+    const json = JSON.stringify(config, null, 2);
+    message.channel.send(`\`\`\`javascript\n ${json} \`\`\``);
   }
 }
+
+export default Config;

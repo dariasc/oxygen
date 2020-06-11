@@ -1,10 +1,16 @@
-import { Client, Message } from 'discord.js';
-import Command from '../struct/command';
+import { Command } from 'discord-akairo';
+import { Message } from 'discord.js';
 
-export default class Ping implements Command {
-  name = 'ping';
+class Ping extends Command {
+  constructor() {
+    super('ping', {
+      aliases: ['ping'],
+    });
+  }
 
-  async run(client: Client, msg: Message) {
-    msg.channel.send('Pong!');
+  exec(message: Message) {
+    message.channel.send('Pong!');
   }
 }
+
+export default Ping;
