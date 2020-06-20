@@ -8,7 +8,6 @@ var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $pr
   Request: {
     fields: {
       seq: {
-        rule: "required",
         type: "uint32",
         id: 1
       },

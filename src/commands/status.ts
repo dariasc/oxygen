@@ -14,19 +14,20 @@ class Status extends Command {
     });
   }
 
-  exec(message: Message) {
+  async exec(message: Message) {
     const config = settings.ensure(message.guild!.id);
+    if (!config.server.token) return;
 
-    const connection = connections.get(message.guild!.id);
-    if (!connection) return;
+    const server = connections.get(message.guild!.id);
+    if (!server) return;
 
     const getInfo: IRequest = {
-      seq: 50,
       playerId: Long.fromValue(config.auth.steamid),
       playerToken: config.server.token,
       getInfo: Empty.create(),
     };
-    connection.request(getInfo);
+    const res = await server.request(getInfo);
+    message.channel.send(`\`\`\`json\n ${JSON.stringify(res, null, 2)}\`\`\``);
   }
 }
 

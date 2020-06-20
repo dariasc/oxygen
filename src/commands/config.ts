@@ -15,7 +15,7 @@ class Config extends Command {
     const config = settings.ensure(message.guild!.id);
 
     const json = JSON.stringify(config, null, 2);
-    message.channel.send(`\`\`\`javascript\n ${json} \`\`\``);
+    message.channel.send(`\`\`\`json\n ${json} \`\`\``);
   }
 }
 

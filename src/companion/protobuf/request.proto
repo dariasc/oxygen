@@ -2,7 +2,8 @@ syntax = "proto3";
 
 message Request {
 
-  required uint32 seq = 1;
+  // this is actually required but its optional. don't ask :d
+  optional uint32 seq = 1;
 
   required uint64 playerId = 2;
 

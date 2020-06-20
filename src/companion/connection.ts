@@ -2,12 +2,12 @@ import WebSocket from 'ws';
 import Long from 'long';
 import fetch, { Headers } from 'node-fetch';
 
-import { Request, Message, IRequest, Empty } from './protobuf/bundle';
+import { Request, Message, IRequest, IResponse, Empty } from './protobuf/bundle';
 import settings, { Config } from '../database';
 
 let manifest: { publishedTime: string | number | Date };
 
-const connections = new Map<string, Connection>();
+const connections = new Map<string, Server>();
 export default connections;
 
 export function connectAll() {
@@ -17,36 +17,43 @@ export function connectAll() {
         return;
       }
 
-      console.log(`setting up connection for ${id}`);
-      const connection = new Connection(config, id);
+      const connection = new Server(config, id);
       connections.set(id, connection);
     });
     console.log(`[connections] connected ${connections.size} guilds to their servers`);
   });
 }
 
-class Connection {
+class Server {
   ws: WebSocket;
   config: Config;
   guildId: string;
+  sequence = 1;
+  promises = new Map<number, (res: IResponse) => void>();
 
   constructor(config: Config, guildId: string) {
     this.config = config;
     this.guildId = guildId;
     const publishedTime = new Date(manifest.publishedTime).valueOf();
 
+    /* @todo we could connect directly to the target server so we dont go through facepunch's proxy
+       this would mean we wouldn't have to fetch the manifest for the latest published time. Have to look into this */
     this.ws = new WebSocket(
       `wss://companion-rust.facepunch.com/game/${this.config.server.ip}/${this.config.server.port}?v=${publishedTime}`,
     );
 
-    this.ws.on('message', (message) => {
-      const response = Message.decode(Buffer.from(message));
-      console.log(response);
+    this.ws.on('message', (data) => {
+      const message = Message.decode(Buffer.from(data));
+      if (message.response) {
+        if (this.promises.has(message.response.seq)) {
+          const resolve = this.promises.get(message.response.seq)!;
+          resolve(message.response);
+        }
+      }
     });
 
     this.ws.on('open', () => {
       const login: IRequest = {
-        seq: 1,
         playerId: Long.fromValue(config.auth.steamid),
         playerToken: config.server.token,
         getInfo: Empty.create(),
@@ -63,13 +70,25 @@ class Connection {
     });
   }
 
-  request(req: IRequest) {
-    if (!this.ws) {
-      return;
-    }
+  request(req: IRequest): Promise<IResponse> {
+    return new Promise((resolve, reject) => {
+      if (!this.ws) {
+        return reject('Websocket to server not initialized');
+      }
 
-    const data = Request.encode(req).finish();
-    this.ws.send(Buffer.from(data));
+      const seq = this.seq();
+      req.seq = seq;
+
+      const data = Request.encode(req).finish();
+      this.ws.send(Buffer.from(data));
+
+      this.promises.set(seq, resolve);
+    });
+  }
+
+  seq(): number {
+    this.sequence += 1;
+    return this.sequence;
   }
 }
 

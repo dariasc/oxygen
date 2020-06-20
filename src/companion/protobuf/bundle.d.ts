@@ -3,7 +3,7 @@ import * as $protobuf from "protobufjs";
 export interface IRequest {
 
     /** Request seq */
-    seq: number;
+    seq?: (number|null);
 
     /** Request playerId */
     playerId: (number|Long);
