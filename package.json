@@ -8,6 +8,7 @@
     "build": "npm run build:json && npm run build:types",
     "build:json": "cd src/companion/protobuf && npx pbjs -t json-module -w commonjs -o bundle.js request.proto",
     "build:types": "cd src/companion/protobuf && npx pbjs -t static-module request.proto | pbts -o bundle.d.ts -",
+    "assets": "ts-node src/companion/assets/fetch_assets.ts",
     "dev": "ts-node-dev --poll src/bot.ts"
   },
   "author": "Diego Arias",
@@ -35,7 +36,9 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-prettier": "^3.1.3",
+    "kleur": "^4.0.1",
     "prettier": "^2.0.5",
+    "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.9.5"
   }
