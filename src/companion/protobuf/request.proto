@@ -1,106 +1,81 @@
 syntax = "proto3";
 
 message Request {
-
-  // this is actually required but its optional. don't ask :d
-  optional uint32 seq = 1;
-
-  required uint64 playerId = 2;
-
-  required int32 playerToken = 3;
-
-  optional uint32 entityId = 4;
-
-  optional Empty getInfo = 8;
-
-  optional Empty getTime = 9;
-
-  optional Empty getMap = 10;
-
-  optional Empty getTeamInfo = 11;
-
-  optional Empty getTeamChat = 12;
-
-  // optional AppSendMessage sendTeamMessage = 13;
-
-  optional Empty getEntityInfo = 14;
-
-  // optional AppSetEntityValue setEntityValue = 15;
-
-  optional Empty checkSubscription = 16;
-
-  // optional AppFlag setSubscription = 17;
-
-  optional Empty getMapMarkers = 18;
-
-  // optional AppCameraFrameRequest getCameraFrame = 19;
-
+  // this is actually but we set it as optional. don't ask :d
+  uint32 seq = 1;
+  uint64 playerId = 2;
+  int32 playerToken = 3;
+  uint32 entityId = 4;
+  Empty getInfo = 8;
+  Empty getTime = 9;
+  Empty getMap = 10;
+  Empty getTeamInfo = 11;
+  Empty getTeamChat = 12;
+  // AppSendMessage sendTeamMessage = 13;
+  Empty getEntityInfo = 14;
+  // AppSetEntityValue setEntityValue = 15;
+  Empty checkSubscription = 16;
+  // AppFlag setSubscription = 17;
+  Empty getMapMarkers = 18;
+  // AppCameraFrameRequest getCameraFrame = 19;
 }
 
 message Message {
-
-  optional Response response = 1;
-
-  // optional Broadcast broadcast = 2;
-
+  Response response = 1;
+  // Broadcast broadcast = 2;
 }
 
 message Response {
-
-  required uint32 seq = 1;
-
-  optional Empty success = 4;
-
-  optional Error error = 5;
-
-  optional Info info = 6;
-
-  // optional Time time = 7;
-
-  // optional Map map = 8;
-
-  // optional TeamInfo teamInfo = 9;
-
-  // optional TeamChat teamChat = 10;
-
-  // optional EntityInfo entityInfo = 11;
-
-  // optional Flag flag = 12;
-
-  // optional MapMarkers mapMarkers = 13;
-
-  // optional CameraFrame cameraFrame = 14;
+  uint32 seq = 1;
+  Empty success = 4;
+  Error error = 5;
+  Info info = 6;
+  // Time time = 7;
+  Map map = 8;
+  // TeamInfo teamInfo = 9;
+  // TeamChat teamChat = 10;
+  // EntityInfo entityInfo = 11;
+  // Flag flag = 12;
+  // MapMarkers mapMarkers = 13;
+  // CameraFrame cameraFrame = 14;
 
 }
 
 message Error {
-  required string error = 1; 
+  string error = 1; 
 }
 
 message Info {
+  string name = 1;
+	string headerImage = 2;
+	string url = 3;
+	string map = 4;
+	uint32 mapSize = 5;
+	uint32 wipeTime = 6;
+	uint32 players = 7;
+	uint32 maxPlayers = 8;
+	uint32 queuedPlayers = 9;
+	uint32 seed = 10;
+	uint32 salt = 11;
+}
 
-  required string name = 1;
+message Map {
+  uint32 width = 1;
+  uint32 height = 2;
+  bytes jpgImage = 3;
+  int32 oceanMargin = 4;
+  string background = 6;
 
-	required string headerImage = 2;
+  message Monument {
+    string token = 1;
+    float x = 2;
+    float y = 3;
+  }
 
-	required string url = 3;
-
-	required string map = 4;
-
-	required uint32 mapSize = 5;
-
-	required uint32 wipeTime = 6;
-
-	required uint32 players = 7;
-
-	required uint32 maxPlayers = 8;
-
-	required uint32 queuedPlayers = 9;
-
-	optional uint32 seed = 10;
-
-	optional uint32 salt = 11;
+  repeated Monument monuments = 5;
 
 }
+
+
 
 message Empty {}

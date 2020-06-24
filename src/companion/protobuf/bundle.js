@@ -12,12 +12,10 @@ var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $pr
         id: 1
       },
       playerId: {
-        rule: "required",
         type: "uint64",
         id: 2
       },
       playerToken: {
-        rule: "required",
         type: "int32",
         id: 3
       },
@@ -70,7 +68,6 @@ var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $pr
   Response: {
     fields: {
       seq: {
-        rule: "required",
         type: "uint32",
         id: 1
       },
@@ -85,13 +82,16 @@ var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $pr
       info: {
         type: "Info",
         id: 6
+      },
+      map: {
+        type: "Map",
+        id: 8
       }
     }
   },
   Error: {
     fields: {
       error: {
-        rule: "required",
         type: "string",
         id: 1
       }
@@ -100,47 +100,38 @@ var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $pr
   Info: {
     fields: {
       name: {
-        rule: "required",
         type: "string",
         id: 1
       },
       headerImage: {
-        rule: "required",
         type: "string",
         id: 2
       },
       url: {
-        rule: "required",
         type: "string",
         id: 3
       },
       map: {
-        rule: "required",
         type: "string",
         id: 4
       },
       mapSize: {
-        rule: "required",
         type: "uint32",
         id: 5
       },
       wipeTime: {
-        rule: "required",
         type: "uint32",
         id: 6
       },
       players: {
-        rule: "required",
         type: "uint32",
         id: 7
       },
       maxPlayers: {
-        rule: "required",
         type: "uint32",
         id: 8
       },
       queuedPlayers: {
-        rule: "required",
         type: "uint32",
         id: 9
       },
@@ -151,6 +142,53 @@ var $root = ($protobuf.roots["default"] || ($protobuf.roots["default"] = new $pr
       salt: {
         type: "uint32",
         id: 11
+      }
+    }
+  },
+  Map: {
+    fields: {
+      width: {
+        type: "uint32",
+        id: 1
+      },
+      height: {
+        type: "uint32",
+        id: 2
+      },
+      jpgImage: {
+        type: "bytes",
+        id: 3
+      },
+      oceanMargin: {
+        type: "int32",
+        id: 4
+      },
+      background: {
+        type: "string",
+        id: 6
+      },
+      monuments: {
+        rule: "repeated",
+        type: "Monument",
+        id: 5
+      }
+    },
+    nested: {
+      Monument: {
+        fields: {
+          token: {
+            type: "string",
+            id: 1
+          },
+          x: {
+            type: "float",
+            id: 2
+          },
+          y: {
+            type: "float",
+            id: 3
+          }
+        }
       }
     }
   },

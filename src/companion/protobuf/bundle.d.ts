@@ -6,10 +6,10 @@ export interface IRequest {
     seq?: (number|null);
 
     /** Request playerId */
-    playerId: (number|Long);
+    playerId?: (number|Long|null);
 
     /** Request playerToken */
-    playerToken: number;
+    playerToken?: (number|null);
 
     /** Request entityId */
     entityId?: (number|null);
@@ -249,7 +249,7 @@ export class Message implements IMessage {
 export interface IResponse {
 
     /** Response seq */
-    seq: number;
+    seq?: (number|null);
 
     /** Response success */
     success?: (IEmpty|null);
@@ -259,6 +259,9 @@ export interface IResponse {
 
     /** Response info */
     info?: (IInfo|null);
+
+    /** Response map */
+    map?: (IMap|null);
 }
 
 /** Represents a Response. */
@@ -281,6 +284,9 @@ export class Response implements IResponse {
 
     /** Response info. */
     public info?: (IInfo|null);
+
+    /** Response map. */
+    public map?: (IMap|null);
 
     /**
      * Creates a new Response instance using the specified properties.
@@ -357,7 +363,7 @@ export class Response implements IResponse {
 export interface IError {
 
     /** Error error */
-    error: string;
+    error?: (string|null);
 }
 
 /** Represents an Error. */
@@ -447,31 +453,31 @@ export class Error implements IError {
 export interface IInfo {
 
     /** Info name */
-    name: string;
+    name?: (string|null);
 
     /** Info headerImage */
-    headerImage: string;
+    headerImage?: (string|null);
 
     /** Info url */
-    url: string;
+    url?: (string|null);
 
     /** Info map */
-    map: string;
+    map?: (string|null);
 
     /** Info mapSize */
-    mapSize: number;
+    mapSize?: (number|null);
 
     /** Info wipeTime */
-    wipeTime: number;
+    wipeTime?: (number|null);
 
     /** Info players */
-    players: number;
+    players?: (number|null);
 
     /** Info maxPlayers */
-    maxPlayers: number;
+    maxPlayers?: (number|null);
 
     /** Info queuedPlayers */
-    queuedPlayers: number;
+    queuedPlayers?: (number|null);
 
     /** Info seed */
     seed?: (number|null);
@@ -591,6 +597,231 @@ export class Info implements IInfo {
      * @returns JSON object
      */
     public toJSON(): { [k: string]: any };
+}
+
+/** Properties of a Map. */
+export interface IMap {
+
+    /** Map width */
+    width?: (number|null);
+
+    /** Map height */
+    height?: (number|null);
+
+    /** Map jpgImage */
+    jpgImage?: (Uint8Array|null);
+
+    /** Map oceanMargin */
+    oceanMargin?: (number|null);
+
+    /** Map background */
+    background?: (string|null);
+
+    /** Map monuments */
+    monuments?: (Map.IMonument[]|null);
+}
+
+/** Represents a Map. */
+export class Map implements IMap {
+
+    /**
+     * Constructs a new Map.
+     * @param [properties] Properties to set
+     */
+    constructor(properties?: IMap);
+
+    /** Map width. */
+    public width: number;
+
+    /** Map height. */
+    public height: number;
+
+    /** Map jpgImage. */
+    public jpgImage: Uint8Array;
+
+    /** Map oceanMargin. */
+    public oceanMargin: number;
+
+    /** Map background. */
+    public background: string;
+
+    /** Map monuments. */
+    public monuments: Map.IMonument[];
+
+    /**
+     * Creates a new Map instance using the specified properties.
+     * @param [properties] Properties to set
+     * @returns Map instance
+     */
+    public static create(properties?: IMap): Map;
+
+    /**
+     * Encodes the specified Map message. Does not implicitly {@link Map.verify|verify} messages.
+     * @param message Map message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encode(message: IMap, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Encodes the specified Map message, length delimited. Does not implicitly {@link Map.verify|verify} messages.
+     * @param message Map message or plain object to encode
+     * @param [writer] Writer to encode to
+     * @returns Writer
+     */
+    public static encodeDelimited(message: IMap, writer?: $protobuf.Writer): $protobuf.Writer;
+
+    /**
+     * Decodes a Map message from the specified reader or buffer.
+     * @param reader Reader or buffer to decode from
+     * @param [length] Message length if known beforehand
+     * @returns Map
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Map;
+
+    /**
+     * Decodes a Map message from the specified reader or buffer, length delimited.
+     * @param reader Reader or buffer to decode from
+     * @returns Map
+     * @throws {Error} If the payload is not a reader or valid buffer
+     * @throws {$protobuf.util.ProtocolError} If required fields are missing
+     */
+    public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Map;
+
+    /**
+     * Verifies a Map message.
+     * @param message Plain object to verify
+     * @returns `null` if valid, otherwise the reason why it is not
+     */
+    public static verify(message: { [k: string]: any }): (string|null);
+
+    /**
+     * Creates a Map message from a plain object. Also converts values to their respective internal types.
+     * @param object Plain object
+     * @returns Map
+     */
+    public static fromObject(object: { [k: string]: any }): Map;
+
+    /**
+     * Creates a plain object from a Map message. Also converts values to other types if specified.
+     * @param message Map
+     * @param [options] Conversion options
+     * @returns Plain object
+     */
+    public static toObject(message: Map, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+    /**
+     * Converts this Map to JSON.
+     * @returns JSON object
+     */
+    public toJSON(): { [k: string]: any };
+}
+
+export namespace Map {
+
+    /** Properties of a Monument. */
+    interface IMonument {
+
+        /** Monument token */
+        token?: (string|null);
+
+        /** Monument x */
+        x?: (number|null);
+
+        /** Monument y */
+        y?: (number|null);
+    }
+
+    /** Represents a Monument. */
+    class Monument implements IMonument {
+
+        /**
+         * Constructs a new Monument.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: Map.IMonument);
+
+        /** Monument token. */
+        public token: string;
+
+        /** Monument x. */
+        public x: number;
+
+        /** Monument y. */
+        public y: number;
+
+        /**
+         * Creates a new Monument instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Monument instance
+         */
+        public static create(properties?: Map.IMonument): Map.Monument;
+
+        /**
+         * Encodes the specified Monument message. Does not implicitly {@link Map.Monument.verify|verify} messages.
+         * @param message Monument message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: Map.IMonument, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Monument message, length delimited. Does not implicitly {@link Map.Monument.verify|verify} messages.
+         * @param message Monument message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: Map.IMonument, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Monument message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Monument
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): Map.Monument;
+
+        /**
+         * Decodes a Monument message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Monument
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): Map.Monument;
+
+        /**
+         * Verifies a Monument message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Monument message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Monument
+         */
+        public static fromObject(object: { [k: string]: any }): Map.Monument;
+
+        /**
+         * Creates a plain object from a Monument message. Also converts values to other types if specified.
+         * @param message Monument
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: Map.Monument, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Monument to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
 }
 
 /** Properties of an Empty. */
